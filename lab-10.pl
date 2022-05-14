@@ -90,8 +90,8 @@ same([X|Xs],[X|Ys]) :- same(Xs,Ys).
 % example: all_bigger([10,20,30,40],[9,19,29,39]).
 greater(X, Y):- Y < X.
 
-all_bigger([X], [Y]):- greater(X, Y).
-all_bigger([X|T1], [Y|T2]):-all_bigger(T1, T2).
+all_bigger([], []).
+all_bigger([X|T1], [Y|T2]):- greater(X, Y), all_bigger(T1, T2).
 
 % 3.3
 % sublist(List1 ,List2)
@@ -121,10 +121,10 @@ seqR(N, [N|T]):- R is N-1, seqR(R, T).
 % seqR2(N,List)
 % example: seqR2(4,[0,1,2,3,4]).
 
-last(H, X, L):- append(H,[X], L).
+last(I, X, L):- append(I,[X], L).
 
 seqR2(0, L):- last([], 0, L).
-seqR2(N,L) :- last(H, N, L), N2 is N-1, seqR2(N2, H).
+seqR2(N,L) :- last(I, N, L), N2 is N-1, seqR2(N2, I).
 
 % 5
 
@@ -166,15 +166,15 @@ partition([X|T], [X|G], L) :- pred(X), partition(T, G, L).
 partition([X|T], G, [X|L]) :- not(pred(X)), partition(T, G, L).
 
 % l.reversed()
-reversed([X],[X]).
+reversed([],[]).
 reversed([X| T], L):- reversed(T, Rt), append( Rt, [X], L).
 
 % l.drop(2)
-drop(L, N, L):- N =:=0.
+drop(L, 0, L).
 drop([X|T], N, R):- N2 is N -1, drop(T, N2, R).
 
 % l.take(2)
-take(L, N, []):- N =:=0.
+take(L, 0, []).
 take([X|T], N, [X|R]):- N2 is N -1, take(T, N2, R).
 
 % l.zip(l2)
